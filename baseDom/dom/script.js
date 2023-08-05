@@ -11,5 +11,5 @@ div.firstChild//*первый внутренний узел
 div.firstElementChild//*первый внутренний элемент
 
 
-
+//*.parentElement возвращает родителя, а link.closest('.content') ближайшего родителя с указанным селектором
 
