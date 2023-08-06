@@ -51,7 +51,6 @@ console.log(isParent(document.body.children[0], document.querySelector('mark')))
 for(let i = 0; i < document.links.length; i++) {
   let currentElement = document.links[i],
   parentElement = document.links[i].parentElement;
-  console.log(currentElement);
 
   if(currentElement.closest('ul') == ul) {
     arrLinks.push(currentElement.textContent);
