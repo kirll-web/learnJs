@@ -31,4 +31,126 @@ const tasks = [
   },
 ];
 
-(function(arrOfTasks) {})(tasks);
+(function(arrOfTasks) {
+  const objOfTasks = arrOfTasks.reduce((acc, task) => {
+    acc[task._id] = task;
+    return acc;
+  }, {});
+
+  // elements UI
+  const listContainer = document.querySelector('.tasks-list-section .list-group'),
+        form = document.forms['addTask'],
+        inputTitle = form.elements['title'],
+        inputBody = form.elements['body'];
+      
+  renderAllTasks(objOfTasks);
+  form.addEventListener('submit', onFormSubmitHandler);
+  listContainer.addEventListener('click', onDeleteHandler);
+
+  function renderAllTasks(tasksList) {
+    if (!tasksList) {
+      console.error('Передайте список задач');
+      return;
+    }
+
+    const fr = document.createDocumentFragment();
+    Object.values(tasksList).forEach(task => {
+      const li = listItemTemplate(task);
+      fr.appendChild(li);
+    });
+    listContainer.appendChild(fr);
+
+  }
+
+  function listItemTemplate({_id, title, body} = {}) {
+    const li = document.createElement('li');
+    let arrElems = [];
+
+    li.classList.add(
+      'list-group-item',
+      'd-flex',
+      'align-items-center',
+      'flex-wrap',
+      'mt-2'
+    );
+    li.setAttribute('data-task-id', _id);
+
+    const span = document.createElement('span');
+    span.textContent = title;
+    span.style.fontWeight = 'bold';
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete task';
+    deleteBtn.classList.add(
+      'btn',
+      'btn-danger',
+      'ml-auto',
+      'delete-btn'
+    );
+
+    const article = document.createElement('p');
+    article.textContent = body;
+    article.classList.add('mt-2', 'w-100');
+    arrElems.push(span, deleteBtn, article);
+    
+    arrElems.forEach(elem => {
+      li.appendChild(elem);
+    });
+
+
+    return li;
+  }
+  
+  function onFormSubmitHandler(e) {
+    e.preventDefault();
+    const titleValue = inputTitle.value,
+          bodyValue = inputBody.value;
+    
+    if (!titleValue || !bodyValue) {
+      alert('Пожалуйста, введите title и body');
+      return;
+    }
+
+    const task = createNewTask(titleValue, bodyValue);
+    const listItem = listItemTemplate(task);
+    listContainer.insertAdjacentElement('afterbegin', listItem);
+    form.reset();
+  }
+
+  function createNewTask(title, body) {
+    const newTask = {
+      title,
+      body,
+      completed: false,
+      _id: `task-${Math.random()}`
+    };
+
+    objOfTasks[newTask._id] = newTask;
+
+    return {...newTask};
+  }
+
+  function deleteTask(id) {
+    const {title} = objOfTasks[id],
+          isConfirm = confirm(`Вы действительно хотите удалить задачу: ${title}?`);
+    if(!isConfirm) return;
+
+    delete objOfTasks[id];
+    return isConfirm;
+  }
+
+  
+  function deleteTaskFromHTML(el, confirmed) {
+    if(!confirmed) return;
+    el.remove();
+  }
+
+  function onDeleteHandler({target}) {
+    if (target.classList.contains('delete-btn')) {
+      const parent = target.closest('[data-task-id]');//*closest ищет ближайшего родителя с указанным аттрибутом, селекторором и т.д.
+      const id = parent.dataset.taskId,
+            confirmed = deleteTask(id);
+      deleteTaskFromHTML(parent, confirmed)
+    }
+  }
+})(tasks);
