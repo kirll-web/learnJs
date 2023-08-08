@@ -53,17 +53,19 @@ const container = document.querySelector('.container');
 container.insertAdjacentHTML('afterbegin',
 `<table class="table">
 <thead>
-  <tr>
-    
-  </tr>
 </thead>
 <tbody>
 </tbody>
 </table>`);
 
+Object.values(users).forEach((user, index) => {
+  user.index = index + 1;
+});
+
 const tbody = document.querySelector('tbody'),
       thead = document.querySelector('thead'),
       keysTh = {
+        index: '#',
         name: 'Name',
         email: 'Email',
         balance: 'Balance'
@@ -71,16 +73,8 @@ const tbody = document.querySelector('tbody'),
 
 
 function createThForThead(keysTh) {
-  const fragment = document.createDocumentFragment();
-  let th = createTh('#')
-  th.setAttribute('scope', 'col');
-  fragment.appendChild(th);
-  Object.values(keysTh).forEach(value => {
-    th = createTh(value);
-    th.setAttribute('scope', 'col');
-    fragment.appendChild(th);
-  });
-  return fragment;
+  const tr = createTr(keysTh, keysTh);
+  return tr;
 };
 thead.appendChild(createThForThead(keysTh));
 
@@ -90,7 +84,7 @@ function renderAllUsers([...objUsers], keys) {
 
   const fragment = document.createDocumentFragment();
   objUsers.forEach((user, i) => {
-    fragment.appendChild(createTr(user, i, keys));
+    fragment.appendChild(createTr(user, keys));
     totalBalance += user.balance;
   });
   fragment.appendChild(createTotalBalance(totalBalance));
@@ -98,13 +92,9 @@ function renderAllUsers([...objUsers], keys) {
   tbody.appendChild(fragment);
 }
 
-function createTr(user, i, keys) {
+function createTr(user, keys) {
   const tr = document.createElement('tr');
   let arrKeys =  Object.keys(keys);
-
-  const firstTh = createTh(i+1);
-  firstTh.setAttribute('scope', 'row');
-  tr.appendChild(firstTh);
 
   arrKeys.forEach(key => {
     tr.appendChild(createTh(user[key]));
