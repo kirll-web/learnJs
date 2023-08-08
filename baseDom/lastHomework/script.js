@@ -58,25 +58,16 @@ container.insertAdjacentHTML('afterbegin',
 </tbody>
 </table>`);
 
-Object.values(users).forEach((user, index) => {
-  user.index = index + 1;
-});
+Object.values(users).forEach((user, index) => user.index = index + 1);
 
 const tbody = document.querySelector('tbody'),
-      thead = document.querySelector('thead'),
       keysTh = {
         index: '#',
         name: 'Name',
         email: 'Email',
         balance: 'Balance'
-      };
-
-
-function createThForThead(keysTh) {
-  const tr = createTr(keysTh, keysTh);
-  return tr;
-};
-thead.appendChild(createThForThead(keysTh));
+      },
+      thead = document.querySelector('thead').appendChild(createTr(keysTh, keysTh));
 
 
 function renderAllUsers([...objUsers], keys) {
