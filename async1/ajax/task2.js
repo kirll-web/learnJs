@@ -48,7 +48,6 @@ function addUser(user) {
   updateUsersList(users);
 }
 
-
 function updateUsersList(users) {
   userList.innerHTML = '';
   users.forEach(user => {
@@ -70,4 +69,3 @@ function userTemplate(user) {
     </div>
   </div>`;
 }
-
