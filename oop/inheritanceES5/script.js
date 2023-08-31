@@ -77,3 +77,4 @@ Customer.prototype.getMembership = function() {
 
 const customer = new Customer('Masha', 'Tolmacheva', 'basic');
 console.log(customer.getMembership());
+//* запись ES5
