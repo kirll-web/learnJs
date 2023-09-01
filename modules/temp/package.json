@@ -1,11 +1,10 @@
 {
   "name": "lesson-54-intro-webpack",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server",
-    "build": "webpack" //! запуск npm run build / npm run dev
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
@@ -27,5 +26,6 @@
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "description": ""
 }
