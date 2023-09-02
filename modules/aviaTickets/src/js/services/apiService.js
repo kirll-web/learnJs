@@ -1,5 +1,5 @@
 import axios from 'axios';
-import config from '../config/apiConfig'
+import config from '../config/apiConfig.js'
 
 /**
  * /countries - array of countries(возвращает массив поддерживаемых стран)
